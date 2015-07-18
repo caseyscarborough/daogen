@@ -50,8 +50,7 @@ public class FileOutputter implements Outputter {
     daoWriter.close();
     System.out.println("Done!");
 
-    System.out.print("Would you also like to generate the Model for this class? (y/n): ");
-    input = s.nextLine();
+    input = getInput(s, "Would you also like to generate the Model for this class? (y/n): ");
     if (input.equalsIgnoreCase("y")) {
       Map<String, String> voTemplateMap = new HashMap<String, String>();
       voTemplateMap.put("className", clazz.getClassName());
@@ -70,8 +69,7 @@ public class FileOutputter implements Outputter {
       System.out.println("Done!");
     }
 
-    System.out.print("Do you need to output the Dao superclass (select yes if you have not yet done so)? (y/n): ");
-    input = s.nextLine().trim();
+    input = getInput(s, "Do you need to output the Dao superclass (select yes if you have not yet done so)? (y/n): ");
 
     if (input.equalsIgnoreCase("y")) {
       System.out.print("Generating BaseDao class...");
@@ -83,4 +81,14 @@ public class FileOutputter implements Outputter {
       System.out.println("Done!");
     }
   }
+
+  private String getInput(Scanner s, String message) {
+    String input = "";
+    while (input.isEmpty()) {
+      System.out.print(message);
+      input = s.nextLine().trim();
+    }
+    return input;
+  }
+
 }

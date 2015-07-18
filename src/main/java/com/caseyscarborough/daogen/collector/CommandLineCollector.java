@@ -8,6 +8,10 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 public class CommandLineCollector implements Collector {
+
+  private static final String YES_SELECTOR = "y";
+  private static final String NO_SELECTOR = "n";
+  private static final String SELECTION_STRING = "(" + YES_SELECTOR + "/" + NO_SELECTOR + ")";
   
   private PrintStream out;
   
@@ -21,43 +25,42 @@ public class CommandLineCollector implements Collector {
     Scanner s = new Scanner(System.in);
     String input;
 
-    out.print("Enter your base package name: ");
-    daoGen.setPackageName(s.nextLine().trim());
+    String packageName = getInput(s, "Enter your base package name: ");
+    daoGen.setPackageName(packageName);
 
-    out.print("Enter your database name: ");
-    daoGen.setDatabaseName(s.nextLine().trim());
+    String databaseName = getInput(s, "Enter your database name: ");
+    daoGen.setDatabaseName(databaseName);
 
     out.println();
     out.println("CLASS INFORMATION:");
 
     DaoGenClass clazz = new DaoGenClass();
-    out.print("Enter the name of the class you are creating a DAO for: ");
-    String className = s.nextLine().trim();
+
+    String className = getInput(s, "Enter the name of the class you are creating a DAO for: ");
     className = className.substring(0, 1).toUpperCase() + className.substring(1);
     clazz.setClassName(className);
 
-    out.print("Enter the name of the database table that maps to the '" + clazz.getClassName() + "' class: ");
-    clazz.setTableName(s.nextLine().trim());
+    String tableName = getInput(s, "Enter the name of the database table that maps to the '" + clazz.getClassName() + "' class: ");
+    clazz.setTableName(tableName);
 
     out.println();
     out.println("FIELD INFORMATION:");
     int i = 1;
     do {
-      input = "";
       DaoGenField daoGenField = new DaoGenField();
 
-      out.print("Enter the name of field #" + i + " for the '" + clazz.getClassName() + "' class: ");
-      daoGenField.setFieldName(s.nextLine().trim());
+      String fieldName = getInput(s, "Enter the name of field #" + i + " for the '" + clazz.getClassName() + "' class: ");
+      daoGenField.setFieldName(fieldName);
 
-      out.print("Enter the type of the '" + daoGenField.getFieldName() + "' field. (i.e. Long, String, Integer): ");
-      daoGenField.setType(s.nextLine().trim());
+      String fieldType = getInput(s, "Enter the type of the '" + daoGenField.getFieldName() + "' field. (i.e. Long, String, Integer): ");
+      daoGenField.setType(fieldType);
 
-      out.print("Enter the database column name that maps to the '" + daoGenField.getFieldName() + "' field: ");
-      daoGenField.setColumnName(s.nextLine().trim());
+      String columnName = getInput(s, "Enter the database column name that maps to the '" + daoGenField.getFieldName() + "' field: ");
+      daoGenField.setColumnName(columnName);
 
       if (clazz.getIdColumn() == null) {
-        out.print("Is this field the ID field for the '" + clazz.getClassName() + "' class? (y/N): ");
-        daoGenField.setIdColumn(s.nextLine().trim().equals("y"));
+        input = getInput(s, "Is this field the ID field for the '" + clazz.getClassName() + "' class? " + SELECTION_STRING + " ");
+        daoGenField.setIdColumn(input.equals("y"));
       }
 
       out.println("\nYou entered the following field information:");
@@ -65,15 +68,12 @@ public class CommandLineCollector implements Collector {
       out.println("* Type: " + daoGenField.getType());
       out.println("* Database Column: " + daoGenField.getColumnName());
       out.println("* ID Column? " + (daoGenField.isIdColumn() ? "Yes" : "No"));
+      out.println();
 
-      out.print("\nIs this information correct? (Y/n): ");
-      input = s.nextLine().trim();
-
+      input = getInput(s, "Is this information correct? " + SELECTION_STRING + ": ");
       if (!input.equalsIgnoreCase("n")) {
         clazz.addToColumns(daoGenField);
-
-        out.print("Do you have more fields to enter? (Y/n): ");
-        input = s.nextLine().trim();
+        input = getInput(s, "Do you have more fields to enter? " + SELECTION_STRING + ": ");
         i++;
 
         if (input.equalsIgnoreCase("n") && clazz.getIdColumn() == null) {
@@ -89,4 +89,14 @@ public class CommandLineCollector implements Collector {
     daoGen.setClazz(clazz);
     return daoGen;
   }
+
+  private String getInput(Scanner s, String message) {
+    String input = "";
+    while (input.isEmpty()) {
+      out.print(message);
+      input = s.nextLine().trim();
+    }
+    return input;
+  }
+
 }
