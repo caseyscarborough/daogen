@@ -3,9 +3,22 @@ package com.caseyscarborough.daogen;
 public class DaoGenField {
 
   private boolean isIdColumn;
+  private DaoGenClass clazz;
   private String columnName;
   private String fieldName;
   private String type;
+
+  public DaoGenField(DaoGenClass clazz) {
+    this.clazz = clazz;
+  }
+
+  public DaoGenClass getClazz() {
+    return clazz;
+  }
+
+  public void setClazz(DaoGenClass clazz) {
+    this.clazz = clazz;
+  }
 
   public boolean isIdColumn() {
     return isIdColumn;
@@ -69,7 +82,7 @@ public class DaoGenField {
   }
 
   public String getResultSetSetter() {
-    return fieldName + ".set" + getUpperCaseFieldName() + "(resultSet.get" + getResultSetType() + "(\"" + getColumnName() + "\"));";
+    return clazz.getVariableName() + ".set" + getUpperCaseFieldName() + "(resultSet.get" + getResultSetType() + "(\"" + getColumnName() + "\"));";
   }
 
   public String getFieldDeclaration() {
@@ -85,6 +98,6 @@ public class DaoGenField {
   }
 
   public String getBindSetter(int index) {
-    return "statement.set" + getResultSetType() + "(" + index + ", " + fieldName + ".get" + getUpperCaseFieldName() + "());";
+    return "statement.set" + getResultSetType() + "(" + index + ", " + clazz.getVariableName() + ".get" + getUpperCaseFieldName() + "());";
   }
 }
