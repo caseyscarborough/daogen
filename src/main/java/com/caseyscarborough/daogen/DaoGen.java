@@ -47,7 +47,7 @@ public class DaoGen {
     return className;
   }
 
-  public String getLowercaseClassName() {
+  public String getVariableName() {
     return className.substring(0, 1).toLowerCase() + className.substring(1);
   }
 
@@ -117,7 +117,7 @@ public class DaoGen {
   public String getResultSetSetters() {
     StringBuilder sb = new StringBuilder();
     for (DaoColumn column: columns) {
-      sb.append(this.getLowercaseClassName());
+      sb.append(this.getVariableName());
       sb.append(".set").append(column.getUpperCaseFieldName());
       sb.append("(resultSet.get" + column.getResultSetType() + "(\"" + column.getColumnName() + "\"));\n        ");
     }
@@ -185,7 +185,7 @@ public class DaoGen {
     int i = 1;
     for (DaoColumn column: columns) {
       sb.append("            ");
-      sb.append("statement.set" + column.getResultSetType() + "(" + i + ", " + getLowercaseClassName() + "." + "get" + column.getUpperCaseFieldName() + "());\n");
+      sb.append("statement.set" + column.getResultSetType() + "(" + i + ", " + getVariableName() + "." + "get" + column.getUpperCaseFieldName() + "());\n");
       i++;
     }
     return sb.toString();
@@ -208,7 +208,7 @@ public class DaoGen {
     StringBuilder sb = new StringBuilder();
     sb.append(getBindSetters());
     sb.append("            ");
-    sb.append("statement.set" + getIdColumn().getResultSetType() + "(" + (columns.size() + 1) + ", " + getLowercaseClassName() + ".get" + getIdColumn().getUpperCaseFieldName() + "());\n");
+    sb.append("statement.set" + getIdColumn().getResultSetType() + "(" + (columns.size() + 1) + ", " + getVariableName() + ".get" + getIdColumn().getUpperCaseFieldName() + "());\n");
     return sb.toString();
   }
 }

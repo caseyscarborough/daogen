@@ -28,7 +28,7 @@ public class FileOutputter implements Outputter {
     daoTemplateMap.put("columnsList", daoGen.getColumnsList());
     daoTemplateMap.put("tableName", daoGen.getTableName());
     daoTemplateMap.put("bindValuesList", daoGen.getBindValuesList());
-    daoTemplateMap.put("variableName", daoGen.getLowercaseClassName());
+    daoTemplateMap.put("variableName", daoGen.getVariableName());
     daoTemplateMap.put("idColumn", daoGen.getIdColumnString());
     daoTemplateMap.put("idClass", daoGen.getIdColumnClass());
     daoTemplateMap.put("idResultSetClass", daoGen.getIdColumn().getResultSetType());
