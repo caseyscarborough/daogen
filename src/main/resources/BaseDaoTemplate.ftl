@@ -17,8 +17,13 @@ public abstract class BaseDao {
     public BaseDao() {
     }
 
+    private DataSource getDataSource() {
+        throw new RuntimeException("getDataSource() method has not yet been implemented for Base DAO class");
+    }
+
     protected Connection getConnection() {
-      throw new RuntimeException("getConnection() method has not yet been implemented for Base DAO class");
+        DataSource ds = getDataSource();
+        return ds.getConnection();
     }
 
     protected void closeResources(AutoCloseable... resources) {
