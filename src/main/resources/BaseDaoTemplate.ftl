@@ -3,9 +3,8 @@ package ${packageName}.dao;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
+import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * Base DAO class for all data access classes.
@@ -23,7 +22,12 @@ public abstract class BaseDao {
 
     protected Connection getConnection() {
         DataSource ds = getDataSource();
-        return ds.getConnection();
+        try {
+            return ds.getConnection();
+        } catch (SQLException e) {
+            LOGGER.error("An error occurred retrieving connection from DataSource", e);
+            throw new RuntimeException("An error occurred retrieving connection from DataSource", e);
+        }
     }
 
     protected void closeResources(AutoCloseable... resources) {

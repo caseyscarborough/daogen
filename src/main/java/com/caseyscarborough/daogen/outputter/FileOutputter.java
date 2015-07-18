@@ -2,6 +2,7 @@ package com.caseyscarborough.daogen.outputter;
 
 import com.caseyscarborough.daogen.Application;
 import com.caseyscarborough.daogen.DaoGen;
+import com.caseyscarborough.daogen.DaoGenClass;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
@@ -23,27 +24,28 @@ public class FileOutputter implements Outputter {
 
     Template daoTemplate = configuration.getTemplate("DaoImplTemplate.ftl");
 
+    DaoGenClass clazz = daoGen.getClazz();
     Map<String, String> daoTemplateMap = new HashMap<String, String>();
-    daoTemplateMap.put("className", daoGen.getClassName());
-    daoTemplateMap.put("columnsList", daoGen.getColumnsList());
-    daoTemplateMap.put("tableName", daoGen.getTableName());
-    daoTemplateMap.put("bindValuesList", daoGen.getBindValuesList());
-    daoTemplateMap.put("variableName", daoGen.getVariableName());
-    daoTemplateMap.put("idColumn", daoGen.getIdColumnString());
-    daoTemplateMap.put("idClass", daoGen.getIdColumnClass());
-    daoTemplateMap.put("idResultSetClass", daoGen.getIdColumn().getResultSetType());
-    daoTemplateMap.put("setters", daoGen.getResultSetSetters());
-    daoTemplateMap.put("bindSetters", daoGen.getBindSetters());
-    daoTemplateMap.put("updateSetters", daoGen.getUpdateSetters());
-    daoTemplateMap.put("bindUpdateSetters", daoGen.getBindUpdateSetters());
+    daoTemplateMap.put("className", clazz.getClassName());
+    daoTemplateMap.put("columnsList", clazz.getColumnsList());
+    daoTemplateMap.put("tableName", clazz.getTableName());
+    daoTemplateMap.put("bindValuesList", clazz.getBindValuesList());
+    daoTemplateMap.put("variableName", clazz.getVariableName());
+    daoTemplateMap.put("idColumn", clazz.getIdColumnString());
+    daoTemplateMap.put("idClass", clazz.getIdColumnClass());
+    daoTemplateMap.put("idResultSetClass", clazz.getIdColumn().getResultSetType());
+    daoTemplateMap.put("setters", clazz.getResultSetSetters());
+    daoTemplateMap.put("bindSetters", clazz.getBindSetters());
+    daoTemplateMap.put("updateSetters", clazz.getUpdateSetters());
+    daoTemplateMap.put("bindUpdateSetters", clazz.getBindUpdateSetters());
     daoTemplateMap.put("packageName", daoGen.getPackageName());
 
     System.out.print("Generating the DAO for this class...");
-    PrintWriter daoWriter = new PrintWriter("Jdbc" + daoGen.getClassName() + "Dao.java");
+    PrintWriter daoWriter = new PrintWriter("Jdbc" + clazz.getClassName() + "Dao.java");
     daoTemplate.process(daoTemplateMap, daoWriter);
 
     daoTemplate = configuration.getTemplate("DaoTemplate.ftl");
-    daoWriter = new PrintWriter(daoGen.getClassName() + "Dao.java");
+    daoWriter = new PrintWriter(clazz.getClassName() + "Dao.java");
     daoTemplate.process(daoTemplateMap, daoWriter);
     daoWriter.close();
     System.out.println("Done!");
@@ -52,16 +54,16 @@ public class FileOutputter implements Outputter {
     input = s.nextLine();
     if (input.equalsIgnoreCase("y")) {
       Map<String, String> voTemplateMap = new HashMap<String, String>();
-      voTemplateMap.put("className", daoGen.getClassName());
-      voTemplateMap.put("fieldDeclarations", daoGen.getFieldDeclarations());
-      voTemplateMap.put("fieldList", daoGen.getFieldList());
-      voTemplateMap.put("fieldConstructorSetters", daoGen.getFieldConstructorSetters());
-      voTemplateMap.put("fieldGettersAndSetters", daoGen.getFieldGettersAndSetters());
-      voTemplateMap.put("toString", daoGen.getToString());
+      voTemplateMap.put("className", clazz.getClassName());
+      voTemplateMap.put("fieldDeclarations", clazz.getFieldDeclarations());
+      voTemplateMap.put("fieldList", clazz.getFieldList());
+      voTemplateMap.put("fieldConstructorSetters", clazz.getFieldConstructorSetters());
+      voTemplateMap.put("fieldGettersAndSetters", clazz.getFieldGettersAndSetters());
+      voTemplateMap.put("toString", clazz.getToString());
       voTemplateMap.put("packageName", daoGen.getPackageName());
 
       System.out.print("Generating the Model for this class...");
-      PrintWriter voWriter = new PrintWriter(daoGen.getClassName() + ".java");
+      PrintWriter voWriter = new PrintWriter(clazz.getClassName() + ".java");
       Template voTemplate = configuration.getTemplate("ModelTemplate.ftl");
       voTemplate.process(voTemplateMap, voWriter);
       voWriter.close();
