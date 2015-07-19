@@ -5,9 +5,6 @@ import java.util.List;
 
 public class Class {
 
-  private static final String BIND_VARIABLE_CHARACTER = "?";
-  private static final String SEPARATOR = ",";
-
   private List<Field> fields;
   private String name;
   private String tableName;

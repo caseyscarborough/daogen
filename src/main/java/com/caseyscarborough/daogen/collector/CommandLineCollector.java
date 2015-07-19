@@ -13,7 +13,7 @@ public class CommandLineCollector implements Collector {
   private static final String NO_SELECTOR = "n";
   private static final String SELECTION_STRING = "(" + YES_SELECTOR + "/" + NO_SELECTOR + ")";
 
-  private PrintStream out;
+  private final PrintStream out;
 
   public CommandLineCollector() {
     this.out = System.out;
