@@ -60,7 +60,7 @@ public class Field {
     if (type.equals("Integer")) {
       return "Int";
     }
-    return type;
+    return type.substring(0, 1).toUpperCase() + type.substring(1);
   }
 
   @Override
