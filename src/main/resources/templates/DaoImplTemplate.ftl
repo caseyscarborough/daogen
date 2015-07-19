@@ -20,10 +20,10 @@ public class Jdbc${daoGen.clazz.name}Dao extends BaseDao implements ${daoGen.cla
     private static final Logger LOGGER = Logger.getLogger(${daoGen.clazz.name}.class);
 
     private static final String FIND_ALL_STATEMENT = "SELECT <#list daoGen.clazz.fields as field>${field.columnName}<#sep>, </#list> FROM ${daoGen.databaseName}.${daoGen.clazz.tableName}";
-    private static final String FIND_BY_ID_STATEMENT = "SELECT <#list daoGen.clazz.fields as field>${field.columnName}<#sep>, </#list> FROM ${daoGen.databaseName}.${daoGen.clazz.tableName} WHERE ${daoGen.clazz.idColumn.columnName} = ?";
+    private static final String FIND_BY_ID_STATEMENT = "SELECT <#list daoGen.clazz.fields as field>${field.columnName}<#sep>, </#list> FROM ${daoGen.databaseName}.${daoGen.clazz.tableName} WHERE ${daoGen.clazz.idField.columnName} = ?";
     private static final String SAVE_STATEMENT = "INSERT INTO ${daoGen.databaseName}.${daoGen.clazz.tableName} (<#list daoGen.clazz.fields as field>${field.columnName}<#sep>, </#list>) VALUES (<#list daoGen.clazz.fields as field>?<#sep>, </#list>)";
-    private static final String UPDATE_STATEMENT = "UPDATE ${daoGen.databaseName}.${daoGen.clazz.tableName} SET <#list daoGen.clazz.fields as field>${field.columnName} = ?<#sep>, </#list> WHERE ${daoGen.clazz.idColumn.columnName} = ?";
-    private static final String DELETE_STATEMENT = "DELETE FROM ${daoGen.databaseName}.${daoGen.clazz.tableName} WHERE ${daoGen.clazz.idColumn.columnName} = ?";
+    private static final String UPDATE_STATEMENT = "UPDATE ${daoGen.databaseName}.${daoGen.clazz.tableName} SET <#list daoGen.clazz.fields as field>${field.columnName} = ?<#sep>, </#list> WHERE ${daoGen.clazz.idField.columnName} = ?";
+    private static final String DELETE_STATEMENT = "DELETE FROM ${daoGen.databaseName}.${daoGen.clazz.tableName} WHERE ${daoGen.clazz.idField.columnName} = ?";
 
     /**
      * Returns a list of ${daoGen.clazz.name} instances from the database.
@@ -59,7 +59,7 @@ public class Jdbc${daoGen.clazz.name}Dao extends BaseDao implements ${daoGen.cla
      *
      * @param id The id of the ${daoGen.clazz.name} to find.
      */
-    public ${daoGen.clazz.name} findById(${daoGen.clazz.idColumn.type} id) {
+    public ${daoGen.clazz.name} findById(${daoGen.clazz.idField.type} id) {
         LOGGER.debug("Looking up ${daoGen.clazz.name} by ID '" + id + "'...");
         Connection connection = null;
         PreparedStatement statement = null;
@@ -68,9 +68,9 @@ public class Jdbc${daoGen.clazz.name}Dao extends BaseDao implements ${daoGen.cla
         try {
             connection = getConnection();
             statement = connection.prepareStatement(FIND_BY_ID_STATEMENT);
-            statement.set${daoGen.clazz.idColumn.resultSetType}(1, id);
+            statement.set${daoGen.clazz.idField.resultSetType}(1, id);
 
-            LOGGER.debug("Executing query: '" + FIND_BY_ID_STATEMENT + "' with ${daoGen.clazz.idColumn.columnName} '" + id + "'...");
+            LOGGER.debug("Executing query: '" + FIND_BY_ID_STATEMENT + "' with ${daoGen.clazz.idField.columnName} '" + id + "'...");
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -129,7 +129,7 @@ public class Jdbc${daoGen.clazz.name}Dao extends BaseDao implements ${daoGen.cla
         <#list daoGen.clazz.fields as field>
             statement.set${field.resultSetType}(${field?counter}, ${daoGen.clazz.variableName}.get${field.capitalizedName}());
         </#list>
-            statement.set${daoGen.clazz.idColumn.resultSetType}(${daoGen.clazz.numberOfFields + 1}, ${daoGen.clazz.variableName}.get${daoGen.clazz.idColumn.capitalizedName}());
+            statement.set${daoGen.clazz.idField.resultSetType}(${daoGen.clazz.numberOfFields + 1}, ${daoGen.clazz.variableName}.get${daoGen.clazz.idField.capitalizedName}());
 
             LOGGER.debug("Executing update: '" + UPDATE_STATEMENT + "' for " + ${daoGen.clazz.variableName});
             statement.executeUpdate();
@@ -147,7 +147,7 @@ public class Jdbc${daoGen.clazz.name}Dao extends BaseDao implements ${daoGen.cla
      *
      * @param id The id of the instance to delete.
      */
-    public void delete(${daoGen.clazz.idColumn.type} id) {
+    public void delete(${daoGen.clazz.idField.type} id) {
         LOGGER.debug("Deleting ${daoGen.clazz.name} with ID '" + id + "' from the database...");
         Connection connection = null;
         PreparedStatement statement = null;
@@ -155,7 +155,7 @@ public class Jdbc${daoGen.clazz.name}Dao extends BaseDao implements ${daoGen.cla
         try {
             connection = getConnection();
             statement = connection.prepareStatement(DELETE_STATEMENT);
-            statement.set${daoGen.clazz.idColumn.resultSetType}(1, id);
+            statement.set${daoGen.clazz.idField.resultSetType}(1, id);
 
             LOGGER.debug("Executing query: '" + DELETE_STATEMENT + "' for ID '" + id + "'...");
             statement.executeUpdate();

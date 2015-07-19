@@ -19,7 +19,7 @@ public interface ${daoGen.clazz.name}Service {
      *
      * @param id The ID of the ${daoGen.clazz.name} instance.
      */
-    ${daoGen.clazz.name} findById(${daoGen.clazz.idColumn.type} id);
+    ${daoGen.clazz.name} findById(${daoGen.clazz.idField.type} id);
 
     /**
      * Saves a new ${daoGen.clazz.name} instance.
@@ -40,5 +40,5 @@ public interface ${daoGen.clazz.name}Service {
      *
      * @param id The ID of the ${daoGen.clazz.name} instance to delete.
      */
-    void delete(${daoGen.clazz.idColumn.type} id);
+    void delete(${daoGen.clazz.idField.type} id);
 }

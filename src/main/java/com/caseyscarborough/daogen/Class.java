@@ -44,9 +44,9 @@ public class Class {
     this.tableName = tableName.toUpperCase();
   }
 
-  public Field getIdColumn() {
+  public Field getIdField() {
     for (Field field : fields) {
-      if (field.isIdColumn()) {
+      if (field.isIdField()) {
         return field;
       }
     }

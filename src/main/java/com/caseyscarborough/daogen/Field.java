@@ -2,7 +2,7 @@ package com.caseyscarborough.daogen;
 
 public class Field {
 
-  private boolean isIdColumn;
+  private boolean isIdField;
   private Class clazz;
   private String columnName;
   private String name;
@@ -20,12 +20,12 @@ public class Field {
     this.clazz = clazz;
   }
 
-  public boolean isIdColumn() {
-    return isIdColumn;
+  public boolean isIdField() {
+    return isIdField;
   }
 
-  public void setIdColumn(boolean isIdColumn) {
-    this.isIdColumn = isIdColumn;
+  public void setIdField(boolean isIdColumn) {
+    this.isIdField = isIdColumn;
   }
 
   public String getColumnName() {
@@ -66,7 +66,7 @@ public class Field {
   @Override
   public String toString() {
     return "Field{" +
-        "isIdColumn=" + isIdColumn +
+        "isIdField=" + isIdField +
         ", columnName='" + columnName + '\'' +
         ", name='" + name + '\'' +
         ", type='" + type + '\'' +

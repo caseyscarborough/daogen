@@ -19,7 +19,7 @@ public interface ${daoGen.clazz.name}Dao {
      *
      * @param id The id of the ${daoGen.clazz.name} to find.
      */
-    ${daoGen.clazz.name} findById(${daoGen.clazz.idColumn.type} id);
+    ${daoGen.clazz.name} findById(${daoGen.clazz.idField.type} id);
 
     /**
      * Saves a new ${daoGen.clazz.name} instance to the data source.
@@ -40,5 +40,5 @@ public interface ${daoGen.clazz.name}Dao {
      *
      * @param id The id of the instance to delete.
      */
-    void delete(${daoGen.clazz.idColumn.type} id);
+    void delete(${daoGen.clazz.idField.type} id);
 }

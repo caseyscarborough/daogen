@@ -58,16 +58,16 @@ public class CommandLineCollector implements Collector {
       String columnName = getInput(s, "Enter the database column name that maps to the '" + field.getName() + "' field: ");
       field.setColumnName(columnName);
 
-      if (clazz.getIdColumn() == null) {
+      if (clazz.getIdField() == null) {
         input = getInput(s, "Is this field the ID field for the '" + clazz.getName() + "' class? " + SELECTION_STRING + " ");
-        field.setIdColumn(input.equals("y"));
+        field.setIdField(input.equals("y"));
       }
 
       out.println("\nYou entered the following field information:");
       out.println("* Field Name: " + field.getName());
       out.println("* Type: " + field.getType());
       out.println("* Database Column: " + field.getColumnName());
-      out.println("* ID Column? " + (field.isIdColumn() ? "Yes" : "No"));
+      out.println("* ID Column? " + (field.isIdField() ? "Yes" : "No"));
       out.println();
 
       input = getInput(s, "Is this information correct? " + SELECTION_STRING + ": ");
@@ -76,7 +76,7 @@ public class CommandLineCollector implements Collector {
         input = getInput(s, "Do you have more fields to enter? " + SELECTION_STRING + ": ");
         i++;
 
-        if (input.equalsIgnoreCase("n") && clazz.getIdColumn() == null) {
+        if (input.equalsIgnoreCase("n") && clazz.getIdField() == null) {
           out.println("You have not yet entered an ID column. The Dao Generator currently requires an ID column for your class.");
           input = "y";
         }

@@ -22,7 +22,7 @@ public class ${daoGen.clazz.name}ServiceImpl implements ${daoGen.clazz.name}Serv
         return ${daoGen.clazz.variableName}Dao.findAll();
     }
 
-    public ${daoGen.clazz.name} findById(${daoGen.clazz.idColumn.type} id) {
+    public ${daoGen.clazz.name} findById(${daoGen.clazz.idField.type} id) {
         return ${daoGen.clazz.variableName}Dao.findById(id);
     }
 
@@ -34,7 +34,7 @@ public class ${daoGen.clazz.name}ServiceImpl implements ${daoGen.clazz.name}Serv
         return ${daoGen.clazz.variableName}Dao.update(${daoGen.clazz.variableName});
     }
 
-    public void delete(${daoGen.clazz.idColumn.type} id) {
+    public void delete(${daoGen.clazz.idField.type} id) {
         ${daoGen.clazz.variableName}Dao.delete(id);
     }
 }
