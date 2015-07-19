@@ -1,8 +1,8 @@
 package com.caseyscarborough.daogen.collector;
 
+import com.caseyscarborough.daogen.DaoGen;
 import com.caseyscarborough.daogen.DaoGenClass;
 import com.caseyscarborough.daogen.DaoGenField;
-import com.caseyscarborough.daogen.DaoGen;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -12,9 +12,9 @@ public class CommandLineCollector implements Collector {
   private static final String YES_SELECTOR = "y";
   private static final String NO_SELECTOR = "n";
   private static final String SELECTION_STRING = "(" + YES_SELECTOR + "/" + NO_SELECTOR + ")";
-  
+
   private PrintStream out;
-  
+
   public CommandLineCollector() {
     this.out = System.out;
   }
