@@ -1,6 +1,6 @@
-package ${daoGen.packageName}.service;
+package ${daoGen.packageName}.${Constants.SERVICE_PACKAGE_NAME};
 
-import ${daoGen.packageName}.vo.${daoGen.clazz.name};
+import ${daoGen.packageName}.${Constants.MODEL_PACKAGE_NAME}.${daoGen.clazz.name};
 
 import java.util.List;
 

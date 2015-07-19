@@ -1,4 +1,4 @@
-package ${daoGen.packageName}.vo;
+package ${daoGen.packageName}.${Constants.MODEL_PACKAGE_NAME};
 
 public class ${daoGen.clazz.name} {
 

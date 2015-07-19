@@ -1,13 +1,13 @@
-package ${daoGen.packageName}.dao;
+package ${daoGen.packageName}.${Constants.DAO_PACKAGE_NAME};
 
-import ${daoGen.packageName}.vo.${daoGen.clazz.name};
+import ${daoGen.packageName}.${Constants.MODEL_PACKAGE_NAME}.${daoGen.clazz.name};
 
 import java.util.List;
 
 /**
  * Data access layer for the ${daoGen.clazz.name} class.
  */
-public interface ${daoGen.clazz.name}Dao {
+public interface ${daoGen.clazz.name}${Constants.DAO_CLASS_SUFFIX} {
 
     /**
      * Returns a list of ${daoGen.clazz.name} instances from the data source.

@@ -1,6 +1,6 @@
-package ${daoGen.packageName}.dao;
+package ${daoGen.packageName}.${Constants.DAO_PACKAGE_NAME};
 
-import ${daoGen.packageName}.vo.${daoGen.clazz.name};
+import ${daoGen.packageName}.${Constants.MODEL_PACKAGE_NAME}.${daoGen.clazz.name};
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * Data access layer implementation for the ${daoGen.clazz.name} class.
  *
- * @see {@link ${daoGen.clazz.name}Dao}
+* @see {@link ${daoGen.clazz.name}${Constants.DAO_CLASS_SUFFIX}}
  */
-public class Jdbc${daoGen.clazz.name}Dao extends BaseDao implements ${daoGen.clazz.name}Dao {
+public class Jdbc${daoGen.clazz.name}${Constants.DAO_CLASS_SUFFIX} extends Base${Constants.DAO_CLASS_SUFFIX} implements ${daoGen.clazz.name}${Constants.DAO_CLASS_SUFFIX} {
 
-    private static final Logger LOGGER = Logger.getLogger(${daoGen.clazz.name}.class);
+private static final Logger LOGGER = Logger.getLogger(${daoGen.clazz.name}${Constants.DAO_CLASS_SUFFIX}.class);
 
     private static final String FIND_ALL_STATEMENT = "SELECT <#list daoGen.clazz.fields as field>${field.columnName}<#sep>, </#list> FROM ${daoGen.databaseName}.${daoGen.clazz.tableName}";
     private static final String FIND_BY_ID_STATEMENT = "SELECT <#list daoGen.clazz.fields as field>${field.columnName}<#sep>, </#list> FROM ${daoGen.databaseName}.${daoGen.clazz.tableName} WHERE ${daoGen.clazz.idField.columnName} = ?";

@@ -1,4 +1,4 @@
-package ${daoGen.packageName}.dao;
+package ${daoGen.packageName}.${Constants.DAO_PACKAGE_NAME};
 
 import org.apache.log4j.Logger;
 
@@ -9,15 +9,15 @@ import java.sql.SQLException;
 /**
  * Base DAO class for all data access classes.
  */
-public abstract class BaseDao {
+public abstract class Base${Constants.DAO_CLASS_SUFFIX} {
 
-    private static final Logger LOGGER = Logger.getLogger(BaseDao.class);
+private static final Logger LOGGER = Logger.getLogger(Base${Constants.DAO_CLASS_SUFFIX}.class);
 
-    public BaseDao() {
+public Base${Constants.DAO_CLASS_SUFFIX}() {
     }
 
     private DataSource getDataSource() {
-        throw new RuntimeException("getDataSource() method has not yet been implemented for Base DAO class");
+throw new RuntimeException("getDataSource() method has not yet been implemented for Base${Constants.DAO_CLASS_SUFFIX} class");
     }
 
     protected Connection getConnection() {
