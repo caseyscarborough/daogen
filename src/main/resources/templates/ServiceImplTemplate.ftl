@@ -1,40 +1,40 @@
-package ${packageName}.service;
+package ${daoGen.packageName}.service;
 
-import ${packageName}.dao.${className}Dao;
-import ${packageName}.vo.${className};
+import ${daoGen.packageName}.dao.${daoGen.clazz.name}Dao;
+import ${daoGen.packageName}.vo.${daoGen.clazz.name};
 
 import java.util.List;
 
 /**
- * Service layer implementation for the ${className} class.
+ * Service layer implementation for the ${daoGen.clazz.name} class.
  *
- * @see {@link ${className}Service}
+ * @see {@link ${daoGen.clazz.name}Service}
  */
-public class ${className}ServiceImpl implements ${className}Service {
+public class ${daoGen.clazz.name}ServiceImpl implements ${daoGen.clazz.name}Service {
 
-    private ${className}Dao ${variableName}Dao;
+    private ${daoGen.clazz.name}Dao ${daoGen.clazz.variableName}Dao;
 
-    public ${className}ServiceImpl(${className}Dao ${variableName}Dao) {
-        this.${variableName}Dao = ${variableName}Dao;
+    public ${daoGen.clazz.name}ServiceImpl(${daoGen.clazz.name}Dao ${daoGen.clazz.variableName}Dao) {
+        this.${daoGen.clazz.variableName}Dao = ${daoGen.clazz.variableName}Dao;
     }
 
-    public List<${className}> findAll() {
-        return ${variableName}Dao.findAll();
+    public List<${daoGen.clazz.name}> findAll() {
+        return ${daoGen.clazz.variableName}Dao.findAll();
     }
 
-    public ${className} findById(${idClass} id) {
-        return ${variableName}Dao.findById(id);
+    public ${daoGen.clazz.name} findById(${daoGen.clazz.idColumn.type} id) {
+        return ${daoGen.clazz.variableName}Dao.findById(id);
     }
 
-    public ${className} save(${className} ${variableName}) {
-        return ${variableName}Dao.save(${variableName});
+    public ${daoGen.clazz.name} save(${daoGen.clazz.name} ${daoGen.clazz.variableName}) {
+        return ${daoGen.clazz.variableName}Dao.save(${daoGen.clazz.variableName});
     }
 
-    public ${className} update(${className} ${variableName}) {
-        return ${variableName}Dao.update(${variableName});
+    public ${daoGen.clazz.name} update(${daoGen.clazz.name} ${daoGen.clazz.variableName}) {
+        return ${daoGen.clazz.variableName}Dao.update(${daoGen.clazz.variableName});
     }
 
-    public void delete(${idClass} id) {
-        ${variableName}Dao.delete(id);
+    public void delete(${daoGen.clazz.idColumn.type} id) {
+        ${daoGen.clazz.variableName}Dao.delete(id);
     }
 }

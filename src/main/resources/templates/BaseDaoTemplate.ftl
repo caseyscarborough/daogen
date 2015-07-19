@@ -1,4 +1,4 @@
-package ${packageName}.dao;
+package ${daoGen.packageName}.dao;
 
 import org.apache.log4j.Logger;
 

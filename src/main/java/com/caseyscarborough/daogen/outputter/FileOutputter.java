@@ -1,9 +1,8 @@
 package com.caseyscarborough.daogen.outputter;
 
 import com.caseyscarborough.daogen.Application;
+import com.caseyscarborough.daogen.Class;
 import com.caseyscarborough.daogen.DaoGen;
-import com.caseyscarborough.daogen.DaoGenClass;
-import com.caseyscarborough.daogen.util.FreeMarkerUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -11,6 +10,7 @@ import freemarker.template.TemplateException;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -33,13 +33,14 @@ public class FileOutputter implements Outputter {
   public void output(DaoGen daoGen) throws Exception {
     Scanner s = new Scanner(System.in);
 
-    DaoGenClass clazz = daoGen.getClazz();
-    Map<String, String> templateMap = FreeMarkerUtils.getMapForDaoGen(daoGen);
+    Map<String, Object> templateMap = new HashMap<String, Object>();
+    templateMap.put("daoGen", daoGen);
+    Class clazz = daoGen.getClazz();
 
     new File(OUTPUT_DIRECTORY + "/" + DAO_DIRECTORY).mkdirs();
     System.out.print("Generating the DAO classes...");
-    writeTemplate(OUTPUT_DIRECTORY + "/" + DAO_DIRECTORY + "/" + clazz.getClassName() + "Dao.java", "templates/DaoTemplate.ftl", templateMap);
-    writeTemplate(OUTPUT_DIRECTORY + "/" + DAO_DIRECTORY + "/Jdbc" + clazz.getClassName() + "Dao.java", "templates/DaoImplTemplate.ftl", templateMap);
+    writeTemplate(OUTPUT_DIRECTORY + "/" + DAO_DIRECTORY + "/" + clazz.getName() + "Dao.java", "templates/DaoTemplate.ftl", templateMap);
+    writeTemplate(OUTPUT_DIRECTORY + "/" + DAO_DIRECTORY + "/Jdbc" + clazz.getName() + "Dao.java", "templates/DaoImplTemplate.ftl", templateMap);
     System.out.println("Done!");
 
     String input = getInput(s, "Do you need to output the Dao superclass (select yes if you have not yet done so)? (y/n): ");
@@ -53,7 +54,7 @@ public class FileOutputter implements Outputter {
     if (input.equalsIgnoreCase("y")) {
       new File(OUTPUT_DIRECTORY + "/" + MODEL_DIRECTORY).mkdir();
       System.out.print("Generating the Model for this class...");
-      writeTemplate(OUTPUT_DIRECTORY + "/" + MODEL_DIRECTORY + "/" + clazz.getClassName() + ".java", "templates/ModelTemplate.ftl", templateMap);
+      writeTemplate(OUTPUT_DIRECTORY + "/" + MODEL_DIRECTORY + "/" + clazz.getName() + ".java", "templates/ModelTemplate.ftl", templateMap);
       System.out.println("Done!");
     }
 
@@ -61,8 +62,8 @@ public class FileOutputter implements Outputter {
     if (input.equalsIgnoreCase("y")) {
       new File(OUTPUT_DIRECTORY + "/" + SERVICE_DIRECTORY).mkdir();
       System.out.print("Generating Service classes...");
-      writeTemplate(OUTPUT_DIRECTORY + "/" + SERVICE_DIRECTORY + "/" + clazz.getClassName() + "Service.java", "templates/ServiceTemplate.ftl", templateMap);
-      writeTemplate(OUTPUT_DIRECTORY + "/" + SERVICE_DIRECTORY + "/" + clazz.getClassName() + "ServiceImpl.java", "templates/ServiceImplTemplate.ftl", templateMap);
+      writeTemplate(OUTPUT_DIRECTORY + "/" + SERVICE_DIRECTORY + "/" + clazz.getName() + "Service.java", "templates/ServiceTemplate.ftl", templateMap);
+      writeTemplate(OUTPUT_DIRECTORY + "/" + SERVICE_DIRECTORY + "/" + clazz.getName() + "ServiceImpl.java", "templates/ServiceImplTemplate.ftl", templateMap);
       System.out.println("Done!");
     }
   }
@@ -76,7 +77,7 @@ public class FileOutputter implements Outputter {
     return input;
   }
 
-  private void writeTemplate(String filename, String templateString, Map<String, String> parameters) throws IOException, TemplateException {
+  private void writeTemplate(String filename, String templateString, Map<String, Object> parameters) throws IOException, TemplateException {
     PrintWriter writer = new PrintWriter(filename);
     Template template = configuration.getTemplate(templateString);
     template.process(parameters, writer);

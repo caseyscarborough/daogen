@@ -1,6 +1,6 @@
-package ${packageName}.dao;
+package ${daoGen.packageName}.dao;
 
-import ${packageName}.vo.${className};
+import ${daoGen.packageName}.vo.${daoGen.clazz.name};
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -11,25 +11,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Data access layer implementation for the ${className} class.
+ * Data access layer implementation for the ${daoGen.clazz.name} class.
  *
- * @see {@link ${className}Dao}
+ * @see {@link ${daoGen.clazz.name}Dao}
  */
-public class Jdbc${className}Dao extends BaseDao implements ${className}Dao {
+public class Jdbc${daoGen.clazz.name}Dao extends BaseDao implements ${daoGen.clazz.name}Dao {
 
-    private static final Logger LOGGER = Logger.getLogger(${className}.class);
+    private static final Logger LOGGER = Logger.getLogger(${daoGen.clazz.name}.class);
 
-    private static final String FIND_ALL_STATEMENT = "SELECT ${columnsList} FROM ${tableName}";
-    private static final String FIND_BY_ID_STATEMENT = "SELECT ${columnsList} FROM ${tableName} WHERE ${idColumn} = ?";
-    private static final String SAVE_STATEMENT = "INSERT INTO ${tableName} (${columnsList}) VALUES (${bindValuesList})";
-    private static final String UPDATE_STATEMENT = "UPDATE ${tableName} SET ${updateSetters} WHERE ${idColumn} = ?";
-    private static final String DELETE_STATEMENT = "DELETE FROM ${tableName} WHERE ${idColumn} = ?";
+    private static final String FIND_ALL_STATEMENT = "SELECT <#list daoGen.clazz.fields as field>${field.columnName}<#sep>, </#list> FROM ${daoGen.databaseName}.${daoGen.clazz.tableName}";
+    private static final String FIND_BY_ID_STATEMENT = "SELECT <#list daoGen.clazz.fields as field>${field.columnName}<#sep>, </#list> FROM ${daoGen.databaseName}.${daoGen.clazz.tableName} WHERE ${daoGen.clazz.idColumn.columnName} = ?";
+    private static final String SAVE_STATEMENT = "INSERT INTO ${daoGen.databaseName}.${daoGen.clazz.tableName} (<#list daoGen.clazz.fields as field>${field.columnName}<#sep>, </#list>) VALUES (<#list daoGen.clazz.fields as field>?<#sep>, </#list>)";
+    private static final String UPDATE_STATEMENT = "UPDATE ${daoGen.databaseName}.${daoGen.clazz.tableName} SET <#list daoGen.clazz.fields as field>${field.columnName} = ?<#sep>, </#list> WHERE ${daoGen.clazz.idColumn.columnName} = ?";
+    private static final String DELETE_STATEMENT = "DELETE FROM ${daoGen.databaseName}.${daoGen.clazz.tableName} WHERE ${daoGen.clazz.idColumn.columnName} = ?";
 
     /**
-     * Returns a list of ${className} instances from the database.
+     * Returns a list of ${daoGen.clazz.name} instances from the database.
      */
-    public List<${className}> findAll() {
-        LOGGER.debug("Retrieving a list of all ${className} instances from the database...");
+    public List<${daoGen.clazz.name}> findAll() {
+        LOGGER.debug("Retrieving a list of all ${daoGen.clazz.name} instances from the database...");
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -41,26 +41,26 @@ public class Jdbc${className}Dao extends BaseDao implements ${className}Dao {
             LOGGER.debug("Executing query: '" + FIND_ALL_STATEMENT + "'...");
             resultSet = statement.executeQuery();
 
-            List<${className}> list = new ArrayList<${className}>();
+            List<${daoGen.clazz.name}> list = new ArrayList<${daoGen.clazz.name}>();
             while (resultSet.next()) {
-                list.add(resultSetTo${className}(resultSet));
+                list.add(resultSetTo${daoGen.clazz.name}(resultSet));
             }
             return list;
         } catch (Exception e) {
-            LOGGER.error("An error occurred while retrieving ${className} instances from the database", e);
-            throw new RuntimeException("An error occurred while retrieving ${className} instances from the database", e);
+            LOGGER.error("An error occurred while retrieving ${daoGen.clazz.name} instances from the database", e);
+            throw new RuntimeException("An error occurred while retrieving ${daoGen.clazz.name} instances from the database", e);
         } finally {
             closeResources(connection, statement, resultSet);
         }
     }
 
     /**
-     * Finds a single ${className} instance from the database by id.
+     * Finds a single ${daoGen.clazz.name} instance from the database by id.
      *
-     * @param id The id of the ${className} to find.
+     * @param id The id of the ${daoGen.clazz.name} to find.
      */
-    public ${className} findById(${idClass} id) {
-        LOGGER.debug("Looking up ${className} by ID '" + id + "'...");
+    public ${daoGen.clazz.name} findById(${daoGen.clazz.idColumn.type} id) {
+        LOGGER.debug("Looking up ${daoGen.clazz.name} by ID '" + id + "'...");
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -68,101 +68,110 @@ public class Jdbc${className}Dao extends BaseDao implements ${className}Dao {
         try {
             connection = getConnection();
             statement = connection.prepareStatement(FIND_BY_ID_STATEMENT);
-            statement.set${idResultSetClass}(1, id);
+            statement.set${daoGen.clazz.idColumn.resultSetType}(1, id);
 
-            LOGGER.debug("Executing query: '" + FIND_BY_ID_STATEMENT + "' with ${idColumn} '" + id + "'...");
+            LOGGER.debug("Executing query: '" + FIND_BY_ID_STATEMENT + "' with ${daoGen.clazz.idColumn.columnName} '" + id + "'...");
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                return resultSetTo${className}(resultSet);
+                return resultSetTo${daoGen.clazz.name}(resultSet);
             }
             return null;
         } catch (Exception e) {
-            LOGGER.error("An error occurred while retrieving ${className} instance with ID '" + id + "' from the database", e);
-            throw new RuntimeException("An error occurred while retrieving ${className} instance with ID '" + id + "' from the database", e);
+            LOGGER.error("An error occurred while retrieving ${daoGen.clazz.name} instance with ID '" + id + "' from the database", e);
+            throw new RuntimeException("An error occurred while retrieving ${daoGen.clazz.name} instance with ID '" + id + "' from the database", e);
         } finally {
             closeResources(connection, statement, resultSet);
         }
     }
 
     /**
-     * Saves a new ${className} instance to the database.
+     * Saves a new ${daoGen.clazz.name} instance to the database.
      *
-     * @param ${variableName} The ${className} instance to persist.
+     * @param ${daoGen.clazz.variableName} The ${daoGen.clazz.name} instance to persist.
      */
-    public ${className} save(${className} ${variableName}) {
-        LOGGER.debug("Saving new ${className} instance to the database: " + ${variableName});
+    public ${daoGen.clazz.name} save(${daoGen.clazz.name} ${daoGen.clazz.variableName}) {
+        LOGGER.debug("Saving new ${daoGen.clazz.name} instance to the database: " + ${daoGen.clazz.variableName});
         Connection connection = null;
         PreparedStatement statement = null;
 
         try {
             connection = getConnection();
             statement = connection.prepareStatement(SAVE_STATEMENT);
-${bindSetters}
-            LOGGER.debug("Executing save: '" + SAVE_STATEMENT + "' for " + ${variableName});
+        <#list daoGen.clazz.fields as field>
+            statement.set${field.resultSetType}(${field?counter}, ${daoGen.clazz.variableName}.get${field.capitalizedName}());
+        </#list>
+
+            LOGGER.debug("Executing save: '" + SAVE_STATEMENT + "' for " + ${daoGen.clazz.variableName});
             statement.executeUpdate();
-            return ${variableName};
+            return ${daoGen.clazz.variableName};
         } catch (Exception e) {
-            LOGGER.error("An error occurred while saving ${className} instance to the database", e);
-            throw new RuntimeException("An error occurred while saving ${className} instance to the database", e);
+            LOGGER.error("An error occurred while saving ${daoGen.clazz.name} instance to the database", e);
+            throw new RuntimeException("An error occurred while saving ${daoGen.clazz.name} instance to the database", e);
         } finally {
             closeResources(connection, statement);
         }
     }
 
     /**
-     * Updates an existing ${className} instance in the database.
+     * Updates an existing ${daoGen.clazz.name} instance in the database.
      *
-     * @param ${variableName} The ${className} instance to update.
+     * @param ${daoGen.clazz.variableName} The ${daoGen.clazz.name} instance to update.
      */
-    public ${className} update(${className} ${variableName}) {
-        LOGGER.debug("Updating ${className} to the database...");
+    public ${daoGen.clazz.name} update(${daoGen.clazz.name} ${daoGen.clazz.variableName}) {
+        LOGGER.debug("Updating ${daoGen.clazz.name} to the database...");
         Connection connection = null;
         PreparedStatement statement = null;
 
         try {
             connection = getConnection();
             statement = connection.prepareStatement(UPDATE_STATEMENT);
-${bindUpdateSetters}
-            LOGGER.debug("Executing update: '" + UPDATE_STATEMENT + "' for " + ${variableName});
+        <#list daoGen.clazz.fields as field>
+            statement.set${field.resultSetType}(${field?counter}, ${daoGen.clazz.variableName}.get${field.capitalizedName}());
+        </#list>
+            statement.set${daoGen.clazz.idColumn.resultSetType}(${daoGen.clazz.numberOfFields + 1}, ${daoGen.clazz.variableName}.get${daoGen.clazz.idColumn.capitalizedName}());
+
+            LOGGER.debug("Executing update: '" + UPDATE_STATEMENT + "' for " + ${daoGen.clazz.variableName});
             statement.executeUpdate();
-            return ${variableName};
+            return ${daoGen.clazz.variableName};
         } catch (Exception e) {
-            LOGGER.error("An error occurred while updating ${className} instance in the database", e);
-            throw new RuntimeException("An error occurred while updating ${className} instance in the database", e);
+            LOGGER.error("An error occurred while updating ${daoGen.clazz.name} instance in the database", e);
+            throw new RuntimeException("An error occurred while updating ${daoGen.clazz.name} instance in the database", e);
         } finally {
             closeResources(connection, statement);
         }
     }
 
     /**
-     * Deletes an existing ${className} instance from the database.
+     * Deletes an existing ${daoGen.clazz.name} instance from the database.
      *
      * @param id The id of the instance to delete.
      */
-    public void delete(${idClass} id) {
-        LOGGER.debug("Deleting ${className} with ID '" + id + "' from the database...");
+    public void delete(${daoGen.clazz.idColumn.type} id) {
+        LOGGER.debug("Deleting ${daoGen.clazz.name} with ID '" + id + "' from the database...");
         Connection connection = null;
         PreparedStatement statement = null;
 
         try {
             connection = getConnection();
             statement = connection.prepareStatement(DELETE_STATEMENT);
-            statement.set${idResultSetClass}(1, id);
+            statement.set${daoGen.clazz.idColumn.resultSetType}(1, id);
 
             LOGGER.debug("Executing query: '" + DELETE_STATEMENT + "' for ID '" + id + "'...");
             statement.executeUpdate();
         } catch (Exception e) {
-            LOGGER.error("An error occurred while deleting ${className} instance with ID '" + id + "' from the database", e);
-            throw new RuntimeException("An error occurred while deleting ${className} instance with ID '" + id + "' from the database", e);
+            LOGGER.error("An error occurred while deleting ${daoGen.clazz.name} instance with ID '" + id + "' from the database", e);
+            throw new RuntimeException("An error occurred while deleting ${daoGen.clazz.name} instance with ID '" + id + "' from the database", e);
         } finally {
             closeResources(connection, statement);
         }
     }
 
-    private ${className} resultSetTo${className}(ResultSet resultSet) throws SQLException {
-        ${className} ${variableName} = new ${className}();
-        ${setters}
-        return ${variableName};
+    private ${daoGen.clazz.name} resultSetTo${daoGen.clazz.name}(ResultSet resultSet) throws SQLException {
+        ${daoGen.clazz.name} ${daoGen.clazz.variableName} = new ${daoGen.clazz.name}();
+    <#list daoGen.clazz.fields as field>
+        ${daoGen.clazz.variableName}.set${field.capitalizedName}(resultSet.get${field.resultSetType}("${field.columnName}"));
+    </#list>
+        return ${daoGen.clazz.variableName};
     }
 }

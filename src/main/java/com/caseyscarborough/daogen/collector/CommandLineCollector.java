@@ -1,8 +1,8 @@
 package com.caseyscarborough.daogen.collector;
 
+import com.caseyscarborough.daogen.Class;
 import com.caseyscarborough.daogen.DaoGen;
-import com.caseyscarborough.daogen.DaoGenClass;
-import com.caseyscarborough.daogen.DaoGenField;
+import com.caseyscarborough.daogen.Field;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -34,49 +34,49 @@ public class CommandLineCollector implements Collector {
     out.println();
     out.println("CLASS INFORMATION:");
 
-    DaoGenClass daoGenClass = new DaoGenClass();
+    Class clazz = new Class();
 
     String className = getInput(s, "Enter the name of the class you are creating a DAO for: ");
     className = className.substring(0, 1).toUpperCase() + className.substring(1);
-    daoGenClass.setClassName(className);
+    clazz.setName(className);
 
-    String tableName = getInput(s, "Enter the name of the database table that maps to the '" + daoGenClass.getClassName() + "' class: ");
-    daoGenClass.setTableName(tableName);
+    String tableName = getInput(s, "Enter the name of the database table that maps to the '" + clazz.getName() + "' class: ");
+    clazz.setTableName(tableName);
 
     out.println();
     out.println("FIELD INFORMATION:");
     int i = 1;
     do {
-      DaoGenField daoGenField = new DaoGenField(daoGenClass);
+      Field field = new Field(clazz);
 
-      String fieldName = getInput(s, "Enter the name of field #" + i + " for the '" + daoGenClass.getClassName() + "' class: ");
-      daoGenField.setFieldName(fieldName);
+      String fieldName = getInput(s, "Enter the name of field #" + i + " for the '" + clazz.getName() + "' class: ");
+      field.setName(fieldName);
 
-      String fieldType = getInput(s, "Enter the type of the '" + daoGenField.getFieldName() + "' field. (i.e. Long, String, Integer): ");
-      daoGenField.setType(fieldType);
+      String fieldType = getInput(s, "Enter the type of the '" + field.getName() + "' field. (i.e. Long, String, Integer): ");
+      field.setType(fieldType);
 
-      String columnName = getInput(s, "Enter the database column name that maps to the '" + daoGenField.getFieldName() + "' field: ");
-      daoGenField.setColumnName(columnName);
+      String columnName = getInput(s, "Enter the database column name that maps to the '" + field.getName() + "' field: ");
+      field.setColumnName(columnName);
 
-      if (daoGenClass.getIdColumn() == null) {
-        input = getInput(s, "Is this field the ID field for the '" + daoGenClass.getClassName() + "' class? " + SELECTION_STRING + " ");
-        daoGenField.setIdColumn(input.equals("y"));
+      if (clazz.getIdColumn() == null) {
+        input = getInput(s, "Is this field the ID field for the '" + clazz.getName() + "' class? " + SELECTION_STRING + " ");
+        field.setIdColumn(input.equals("y"));
       }
 
       out.println("\nYou entered the following field information:");
-      out.println("* Field Name: " + daoGenField.getFieldName());
-      out.println("* Type: " + daoGenField.getType());
-      out.println("* Database Column: " + daoGenField.getColumnName());
-      out.println("* ID Column? " + (daoGenField.isIdColumn() ? "Yes" : "No"));
+      out.println("* Field Name: " + field.getName());
+      out.println("* Type: " + field.getType());
+      out.println("* Database Column: " + field.getColumnName());
+      out.println("* ID Column? " + (field.isIdColumn() ? "Yes" : "No"));
       out.println();
 
       input = getInput(s, "Is this information correct? " + SELECTION_STRING + ": ");
       if (!input.equalsIgnoreCase("n")) {
-        daoGenClass.addToColumns(daoGenField);
+        clazz.addToColumns(field);
         input = getInput(s, "Do you have more fields to enter? " + SELECTION_STRING + ": ");
         i++;
 
-        if (input.equalsIgnoreCase("n") && daoGenClass.getIdColumn() == null) {
+        if (input.equalsIgnoreCase("n") && clazz.getIdColumn() == null) {
           out.println("You have not yet entered an ID column. The Dao Generator currently requires an ID column for your class.");
           input = "y";
         }
@@ -86,7 +86,7 @@ public class CommandLineCollector implements Collector {
       }
     } while (!input.equalsIgnoreCase("n"));
 
-    daoGen.setClazz(daoGenClass);
+    daoGen.setClazz(clazz);
     return daoGen;
   }
 

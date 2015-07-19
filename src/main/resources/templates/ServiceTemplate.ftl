@@ -1,44 +1,44 @@
-package ${packageName}.service;
+package ${daoGen.packageName}.service;
 
-import ${packageName}.vo.${className};
+import ${daoGen.packageName}.vo.${daoGen.clazz.name};
 
 import java.util.List;
 
 /**
- * Service layer interface for the ${className} class.
+ * Service layer interface for the ${daoGen.clazz.name} class.
  */
-public interface ${className}Service {
+public interface ${daoGen.clazz.name}Service {
 
     /**
-     * Retrieves a list of all ${className} instances.
+     * Retrieves a list of all ${daoGen.clazz.name} instances.
      */
-    List<${className}> findAll();
+    List<${daoGen.clazz.name}> findAll();
 
     /**
-     * Finds a single ${className} instance by its ID.
+     * Finds a single ${daoGen.clazz.name} instance by its ID.
      *
-     * @param id The ID of the ${className} instance.
+     * @param id The ID of the ${daoGen.clazz.name} instance.
      */
-    ${className} findById(${idClass} id);
+    ${daoGen.clazz.name} findById(${daoGen.clazz.idColumn.type} id);
 
     /**
-     * Saves a new ${className} instance.
+     * Saves a new ${daoGen.clazz.name} instance.
      *
-     * @param ${variableName} The ${className} instance to save.
+     * @param ${daoGen.clazz.variableName} The ${daoGen.clazz.name} instance to save.
      */
-    ${className} save(${className} ${variableName});
+    ${daoGen.clazz.name} save(${daoGen.clazz.name} ${daoGen.clazz.variableName});
 
     /**
-     * Updates an existing ${className} instance.
+     * Updates an existing ${daoGen.clazz.name} instance.
      *
-     * @param ${variableName} The ${className} instance to update.
+     * @param ${daoGen.clazz.variableName} The ${daoGen.clazz.name} instance to update.
      */
-    ${className} update(${className} ${variableName});
+    ${daoGen.clazz.name} update(${daoGen.clazz.name} ${daoGen.clazz.variableName});
 
     /**
-     * Deletes an existing ${className} instance.
+     * Deletes an existing ${daoGen.clazz.name} instance.
      *
-     * @param id The ID of the ${className} instance to delete.
+     * @param id The ID of the ${daoGen.clazz.name} instance to delete.
      */
-    void delete(${idClass} id);
+    void delete(${daoGen.clazz.idColumn.type} id);
 }

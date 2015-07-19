@@ -4,7 +4,7 @@ public class DaoGen {
 
   private String packageName;
   private String databaseName;
-  private DaoGenClass clazz;
+  private Class clazz;
 
   public DaoGen() {
   }
@@ -25,11 +25,20 @@ public class DaoGen {
     this.databaseName = databaseName;
   }
 
-  public DaoGenClass getClazz() {
+  public Class getClazz() {
     return clazz;
   }
 
-  public void setClazz(DaoGenClass clazz) {
+  public void setClazz(Class clazz) {
     this.clazz = clazz;
+  }
+
+  @Override
+  public String toString() {
+    return "DaoGen{" +
+        "packageName='" + packageName + '\'' +
+        ", databaseName='" + databaseName + '\'' +
+        ", clazz=" + clazz +
+        '}';
   }
 }

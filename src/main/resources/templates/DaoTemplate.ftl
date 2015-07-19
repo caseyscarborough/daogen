@@ -1,44 +1,44 @@
-package ${packageName}.dao;
+package ${daoGen.packageName}.dao;
 
-import ${packageName}.vo.${className};
+import ${daoGen.packageName}.vo.${daoGen.clazz.name};
 
 import java.util.List;
 
 /**
- * Data access layer for the ${className} class.
+ * Data access layer for the ${daoGen.clazz.name} class.
  */
-public interface ${className}Dao {
+public interface ${daoGen.clazz.name}Dao {
 
     /**
-     * Returns a list of ${className} instances from the data source.
+     * Returns a list of ${daoGen.clazz.name} instances from the data source.
      */
-    public List<${className}> findAll();
+    List<${daoGen.clazz.name}> findAll();
 
     /**
-     * Finds a single ${className} instance from the data source by id.
+     * Finds a single ${daoGen.clazz.name} instance from the data source by id.
      *
-     * @param id The id of the ${className} to find.
+     * @param id The id of the ${daoGen.clazz.name} to find.
      */
-    public ${className} findById(${idClass} id);
+    ${daoGen.clazz.name} findById(${daoGen.clazz.idColumn.type} id);
 
     /**
-     * Saves a new ${className} instance to the data source.
+     * Saves a new ${daoGen.clazz.name} instance to the data source.
      *
-     * @param ${variableName} The ${className} instance to persist.
+     * @param ${daoGen.clazz.variableName} The ${daoGen.clazz.name} instance to persist.
      */
-    public ${className} save(${className} ${variableName});
+    ${daoGen.clazz.name} save(${daoGen.clazz.name} ${daoGen.clazz.variableName});
 
     /**
-     * Updates an existing ${className} instance in the data source.
+     * Updates an existing ${daoGen.clazz.name} instance in the data source.
      *
-     * @param ${variableName} The ${className} instance to update.
+     * @param ${daoGen.clazz.variableName} The ${daoGen.clazz.name} instance to update.
      */
-    public ${className} update(${className} ${variableName});
+    ${daoGen.clazz.name} update(${daoGen.clazz.name} ${daoGen.clazz.variableName});
 
     /**
-     * Deletes an existing ${className} instance from the data source.
+     * Deletes an existing ${daoGen.clazz.name} instance from the data source.
      *
      * @param id The id of the instance to delete.
      */
-    public void delete(${idClass} id);
+    void delete(${daoGen.clazz.idColumn.type} id);
 }
