@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Data access layer for the ${className} class.
+ * Data access layer implementation for the ${className} class.
+ *
+ * @see {@link ${className}Dao}
  */
 public class Jdbc${className}Dao extends BaseDao implements ${className}Dao {
 

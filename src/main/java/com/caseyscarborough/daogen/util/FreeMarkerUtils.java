@@ -1,4 +1,7 @@
-package com.caseyscarborough.daogen;
+package com.caseyscarborough.daogen.util;
+
+import com.caseyscarborough.daogen.DaoGen;
+import com.caseyscarborough.daogen.DaoGenClass;
 
 import java.util.HashMap;
 import java.util.Map;

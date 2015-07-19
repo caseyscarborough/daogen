@@ -3,17 +3,23 @@ package com.caseyscarborough.daogen.outputter;
 import com.caseyscarborough.daogen.Application;
 import com.caseyscarborough.daogen.DaoGen;
 import com.caseyscarborough.daogen.DaoGenClass;
-import com.caseyscarborough.daogen.FreeMarkerUtils;
+import com.caseyscarborough.daogen.util.FreeMarkerUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 import java.util.Scanner;
 
 public class FileOutputter implements Outputter {
+
+  private static final String OUTPUT_DIRECTORY = "output";
+  private static final String DAO_DIRECTORY = "dao";
+  private static final String MODEL_DIRECTORY = "vo";
+  private static final String SERVICE_DIRECTORY = "service";
 
   private final Configuration configuration;
 
@@ -30,22 +36,33 @@ public class FileOutputter implements Outputter {
     DaoGenClass clazz = daoGen.getClazz();
     Map<String, String> templateMap = FreeMarkerUtils.getMapForDaoGen(daoGen);
 
-    System.out.print("Generating the DAO for this class...");
-    writeTemplate(clazz.getClassName() + "Dao.java", "templates/DaoTemplate.ftl", templateMap);
-    writeTemplate("Jdbc" + clazz.getClassName() + "Dao.java", "templates/DaoImplTemplate.ftl", templateMap);
+    new File(OUTPUT_DIRECTORY + "/" + DAO_DIRECTORY).mkdirs();
+    System.out.print("Generating the DAO classes...");
+    writeTemplate(OUTPUT_DIRECTORY + "/" + DAO_DIRECTORY + "/" + clazz.getClassName() + "Dao.java", "templates/DaoTemplate.ftl", templateMap);
+    writeTemplate(OUTPUT_DIRECTORY + "/" + DAO_DIRECTORY + "/Jdbc" + clazz.getClassName() + "Dao.java", "templates/DaoImplTemplate.ftl", templateMap);
     System.out.println("Done!");
 
-    String input = getInput(s, "Would you also like to generate the Model for this class? (y/n): ");
+    String input = getInput(s, "Do you need to output the Dao superclass (select yes if you have not yet done so)? (y/n): ");
     if (input.equalsIgnoreCase("y")) {
-      System.out.print("Generating the Model for this class...");
-      writeTemplate(clazz.getClassName() + ".java", "templates/ModelTemplate.ftl", templateMap);
+      System.out.print("Generating BaseDao class...");
+      writeTemplate(OUTPUT_DIRECTORY + "/" + DAO_DIRECTORY + "/BaseDao.java", "templates/BaseDaoTemplate.ftl", templateMap);
       System.out.println("Done!");
     }
 
-    input = getInput(s, "Do you need to output the Dao superclass (select yes if you have not yet done so)? (y/n): ");
+    input = getInput(s, "Would you also like to generate the Model for this class? (y/n): ");
     if (input.equalsIgnoreCase("y")) {
-      System.out.print("Generating BaseDao class...");
-      writeTemplate("BaseDao.java", "templates/BaseDaoTemplate.ftl", templateMap);
+      new File(OUTPUT_DIRECTORY + "/" + MODEL_DIRECTORY).mkdir();
+      System.out.print("Generating the Model for this class...");
+      writeTemplate(OUTPUT_DIRECTORY + "/" + MODEL_DIRECTORY + "/" + clazz.getClassName() + ".java", "templates/ModelTemplate.ftl", templateMap);
+      System.out.println("Done!");
+    }
+
+    input = getInput(s, "Would you also like to generate the Service layer for this class? (y/n):");
+    if (input.equalsIgnoreCase("y")) {
+      new File(OUTPUT_DIRECTORY + "/" + SERVICE_DIRECTORY).mkdir();
+      System.out.print("Generating Service classes...");
+      writeTemplate(OUTPUT_DIRECTORY + "/" + SERVICE_DIRECTORY + "/" + clazz.getClassName() + "Service.java", "templates/ServiceTemplate.ftl", templateMap);
+      writeTemplate(OUTPUT_DIRECTORY + "/" + SERVICE_DIRECTORY + "/" + clazz.getClassName() + "ServiceImpl.java", "templates/ServiceImplTemplate.ftl", templateMap);
       System.out.println("Done!");
     }
   }
